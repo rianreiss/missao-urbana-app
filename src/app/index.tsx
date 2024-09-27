@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { View, Button, Alert, FlatList, StyleSheet, Text } from "react-native"
+import { View, Button, Alert, FlatList, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { router } from "expo-router"
 import { Camera } from 'expo-camera'
 
@@ -99,6 +99,11 @@ export default function Index() {
     list()
   }, [search])
 
+  const handleButtonPress = (buttonName: string) => {
+    console.log(`${buttonName} pressionado`);
+    // Aqui você pode adicionar a navegação ou lógica correspondente
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: 'black', flex: 1, justifyContent: "center", padding: 32, gap: 16 }}>
       {/* <Input placeholder="Nome" onChangeText={setName} value={name} />
@@ -117,9 +122,27 @@ export default function Index() {
         <Text style={styles.title2}>Missão Urbana App</Text>
       </View>
 
-      <OcurrenceForm />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Meu Perfil')}>
+          <Text style={styles.buttonText}>Meu Perfil</Text>
+        </TouchableOpacity>
 
-      <FlatList
+        <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Minhas Ocorrências')}>
+          <Text style={styles.buttonText}>Minhas Ocorrências</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Nova Ocorrência')}>
+          <Text style={styles.buttonText}>Nova Ocorrência</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Notícias')}>
+          <Text style={styles.buttonText}>Notícias</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* <OcurrenceForm /> */}
+
+      {/* <FlatList
         data={products}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
@@ -131,7 +154,7 @@ export default function Index() {
           />
         )}
         contentContainerStyle={{ gap: 16 }}
-      />
+      /> */}
     </SafeAreaView>
   )
 }
@@ -150,5 +173,35 @@ const styles = StyleSheet.create({
     margin: 5,
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#f5f5f5', // Cor de fundo
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#333',
+  },
+  buttonContainer: {
+    width: '100%',
+    justifyContent: 'space-around', // Espaçamento igual entre os botões
+  },
+  buttonText: {
+    color: '#fff', // Cor do texto
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  button: {
+    backgroundColor: '#fcbc24', // Cor de fundo do botão
+    // backgroundColor: '#dcac34', // Cor de fundo do botão
+    padding: 12,
+    marginVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center', // Centraliza o texto no botão
   }
 })

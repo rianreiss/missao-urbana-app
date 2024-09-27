@@ -96,7 +96,7 @@ export default function Index() {
   }, [search])
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", padding: 32, gap: 16 }}>
+    <View style={{ backgroundColor: 'black', flex: 1, justifyContent: "center", padding: 32, gap: 16 }}>
       <Input placeholder="Nome" onChangeText={setName} value={name} />
       <Input
         placeholder="Quantidade"
