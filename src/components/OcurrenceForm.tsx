@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, TextInputProps } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, TextInputProps, TouchableOpacity, Modal } from 'react-native';
+import { Camera } from "@/components/Camera"
+
 
 const OcurrenceForm: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -8,6 +10,7 @@ const OcurrenceForm: React.FC = () => {
   const [address, setAddress] = useState('');
   const [category, setCategory] = useState('');
   const [erro, setErro] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const validarFormulario = () => {
     if (!title || !description || !category || !photo || !address) {
@@ -55,6 +58,27 @@ const OcurrenceForm: React.FC = () => {
       />
 
       <Text style={styles.label}>Foto</Text>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text style={styles.buttonText}>Abrir Camera</Text>
+      </TouchableOpacity>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Digite seu nome:</Text>
+
+            <Camera></Camera>
+
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <Text>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <TextInput
         style={styles.input}
         value={photo}
@@ -77,7 +101,7 @@ const OcurrenceForm: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    padding: 10,
+    padding: 10
   },
   label: {
     marginBottom: 5,
@@ -87,6 +111,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 54,
+    width: 275,
     borderWidth: 1,
     borderRadius: 7,
     borderColor: "#999",
@@ -96,6 +121,35 @@ const styles = StyleSheet.create({
   error: {
     color: 'red',
     marginBottom: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    height: 400,
+    width: 300
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    width: '100%',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  buttonText: {
+    color: 'cyan', // Cor do texto
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

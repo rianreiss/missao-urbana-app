@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { View, Button, Alert, FlatList, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { router, Link } from "expo-router"
-import { Camera } from 'expo-camera'
 
 import { Input } from "@/components/Input"
 import { Product } from "@/components/Product"
@@ -75,13 +74,7 @@ export default function Index() {
       console.log(error)
     }
   }
-
-  function details(item: ProductDatabase) {
-    setId(String(item.id))
-    setName(item.name)
-    setQuantity(String(item.quantity))
-  }
-
+  
   async function handleSave() {
     if (id) {
       update()
@@ -95,73 +88,15 @@ export default function Index() {
     await list()
   }
 
-  useEffect(() => {
-    list()
-  }, [search])
-
-  const handleButtonPress = (buttonName: string) => {
-    console.log(`${buttonName} pressionado`);
-    // Aqui você pode adicionar a navegação ou lógica correspondente
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Input placeholder="Nome" onChangeText={setName} value={name} />
-      <Input
-        placeholder="Quantidade"
-        onChangeText={setQuantity}
-        value={quantity}
-      />
 
-      <Button title="Salvar" onPress={handleSave} />
-
-      <Input placeholder="Pesquisar" onChangeText={setSearch} /> */}
-
-      <View style={styles.spacer}></View>
-
-      <View>
-        <Text style={styles.title1}>Bem-vindo(a) ao</Text>
-        <Text style={styles.title2}>Missão Urbana App</Text>
-      </View>
-
-      <View style={styles.spacer}></View>
-      <View style={styles.spacer}></View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Meu Perfil')}>
-          <Text style={styles.buttonText}>Meu Perfil</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Minhas Ocorrências')}>
-          <Text style={styles.buttonText}>Minhas Ocorrências</Text>
-        </TouchableOpacity>
-
-        <Link href={"/layout"} style={styles.button}>
-          <TouchableOpacity onPress={() => handleButtonPress('Nova Ocorrência')}>
-            <Text style={styles.buttonText}>Nova Ocorrência</Text>
-          </TouchableOpacity>
+        <Link href={"/"} style={styles.button}>
+            <Text style={styles.buttonText}>Voltar</Text>
         </Link>
 
-        <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Notícias')}>
-          <Text style={styles.buttonText}>Notícias</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* <OcurrenceForm /> */}
-
-      {/* <FlatList
-        data={products}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <Product
-            data={item}
-            onPress={() => details(item)}
-            onDelete={() => remove(item.id)}
-            onOpen={() => router.navigate("/details/" + item.id)}
-          />
-        )}
-        contentContainerStyle={{ gap: 16 }}
-      /> */}
+      <OcurrenceForm></OcurrenceForm>
+      
     </SafeAreaView>
   )
 }
