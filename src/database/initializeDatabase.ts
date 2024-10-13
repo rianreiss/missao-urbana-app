@@ -9,3 +9,17 @@ export async function initializeDatabase(database: SQLiteDatabase) {
     );
   `)
 }
+
+// export async function initializeDatabase(database: SQLiteDatabase) {
+//   await database.execAsync(`
+//     CREATE TABLE IF NOT EXISTS ocurrences (
+//       id INTEGER PRIMARY KEY AUTOINCREMENT,
+//       title TEXT NOT NULL,
+//       name TEXT NOT NULL,
+//       name TEXT NOT NULL,
+//       name TEXT NOT NULL,
+//       name TEXT NOT NULL,
+//       quantity INTEGER NOT NULL
+//     );
+//   `)
+// }

@@ -40,17 +40,19 @@ export function Camera() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.8,
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    width: '100%',
+    borderRadius: 9,
+    overflow: 'hidden'
+
   },
-  message: {
-    textAlign: 'center',
-    paddingBottom: 10,
+  camera: {
+    flex: 1,
+    justifyContent: 'center',
+    borderRadius: 9,
+    overflow: 'hidden'
   },
-  // camera: {
-  //   flex: 1,
-  // },
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',

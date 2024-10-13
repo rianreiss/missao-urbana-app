@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, TextInputProps, TouchableOpacity, Modal } from 'react-native';
 import { Camera } from "@/components/Camera"
+import DropdownButton from '@/components/DropdownButton';
 
 
 const OcurrenceForm: React.FC = () => {
   const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('Selecionar item');
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState('');
   const [address, setAddress] = useState('');
-  const [category, setCategory] = useState('');
   const [erro, setErro] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -33,13 +34,23 @@ const OcurrenceForm: React.FC = () => {
     }
   };
 
+
+  const dropdownData = [
+    { label: 'Asfalto / Calçada / Outros', value: '1' },
+    { label: 'Poste / Fios / Outros', value: '2' },
+    { label: 'Denúncia', value: '3' },
+    { label: 'Esclarecimento', value: '4' },
+    { label: 'Sugestão', value: '5' },
+    { label: 'Outros...', value: '6' },
+  ];
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Título</Text>
-      <TextInput
-        style={styles.input}
-        value={title}
-        onChangeText={setTitle}
+      <Text style={styles.label}>Categoria</Text>
+      <DropdownButton
+        data={dropdownData}
+        // value={category}
+        // onChangeText={setCategory}
       />
 
       <Text style={styles.label}>Descrição</Text>
@@ -50,12 +61,10 @@ const OcurrenceForm: React.FC = () => {
         multiline
       />
 
-      <Text style={styles.label}>Categoria</Text>
-      <TextInput
-        style={styles.input}
-        value={category}
-        onChangeText={setCategory}
-      />
+    <View style={{ flex: 1, flexDirection: 'row' }}>
+      <View style={{ flex: 1, backgroundColor: 'red' }} />
+      <View style={{ flex: 1, backgroundColor: 'green' }} />
+    </View>
 
       <Text style={styles.label}>Foto</Text>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -69,7 +78,6 @@ const OcurrenceForm: React.FC = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalText}>Digite seu nome:</Text>
 
             <Camera></Camera>
 
@@ -129,14 +137,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    flex: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
+    backgroundColor: '#7d7d7d',
+    borderWidth: 1,
+    borderColor: 'white',
     borderRadius: 10,
-    height: 400,
-    width: 300
-  },
-  modalText: {
-    fontSize: 18,
-    marginBottom: 10,
   },
   textInput: {
     height: 40,
