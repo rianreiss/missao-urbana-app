@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { View, Text } from "react-native"
 import { useLocalSearchParams } from "expo-router"
 
-import { useProductDatabase } from "@/database/useProductDatabase"
+import { useProductDatabase } from "@/database/useOccurrenceDatabase"
 
 export default function Details() {
   const [data, setData] = useState({

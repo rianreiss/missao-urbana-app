@@ -8,7 +8,7 @@ import { Product } from "@/components/Product"
 import {
   useProductDatabase,
   ProductDatabase,
-} from "@/database/useProductDatabase"
+} from "@/database/useOccurrenceDatabase"
 
 export default function Index() {
   const [id, setId] = useState("")

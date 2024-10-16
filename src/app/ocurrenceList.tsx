@@ -8,9 +8,9 @@ import { Product } from "@/components/Product"
 import OcurrenceForm from '@/components/OcurrenceForm'
 
 import {
-  useProductDatabase,
-  ProductDatabase,
-} from "@/database/useProductDatabase"
+  useOccurrenceDatabase,
+  OccurrenceDatabase,
+} from "@/database/useOccurrenceDatabase"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Index() {

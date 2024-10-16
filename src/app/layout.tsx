@@ -8,9 +8,9 @@ import { Product } from "@/components/Product"
 import OcurrenceForm from '@/components/OcurrenceForm'
 
 import {
-  useProductDatabase,
-  ProductDatabase,
-} from "@/database/useProductDatabase"
+  useOccurrenceDatabase,
+  OccurrenceDatabase,
+} from "@/database/useOccurrenceDatabase"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Index() {
@@ -18,9 +18,9 @@ export default function Index() {
   const [name, setName] = useState("")
   const [quantity, setQuantity] = useState("")
   const [search, setSearch] = useState("")
-  const [products, setProducts] = useState<ProductDatabase[]>([])
+  const [products, setProducts] = useState<OccurrenceDatabase[]>([])
 
-  const productDatabase = useProductDatabase()
+  const occurrenceDatabase = useOccurrenceDatabase()
 
   async function create() {
     try {
@@ -28,7 +28,7 @@ export default function Index() {
         return Alert.alert("Quantidade", "A quantidade precisa ser um número!")
       }
 
-      const response = await productDatabase.create({
+      const response = await occurrenceDatabase.create({
         name,
         quantity: Number(quantity),
       })
@@ -45,7 +45,7 @@ export default function Index() {
         return Alert.alert("Quantidade", "A quantidade precisa ser um número!")
       }
 
-      const response = await productDatabase.update({
+      const response = await occurrenceDatabase.update({
         id: Number(id),
         name,
         quantity: Number(quantity),
@@ -59,7 +59,7 @@ export default function Index() {
 
   async function list() {
     try {
-      const response = await productDatabase.searchByName(search)
+      const response = await occurrenceDatabase.searchByName(search)
       setProducts(response)
     } catch (error) {
       console.log(error)
@@ -68,7 +68,7 @@ export default function Index() {
 
   async function remove(id: number) {
     try {
-      await productDatabase.remove(id)
+      await occurrenceDatabase.remove(id)
       await list()
     } catch (error) {
       console.log(error)

@@ -3,18 +3,24 @@ import { View, TextInput, Button, Text, StyleSheet, TextInputProps, TouchableOpa
 import { Camera } from "@/components/Camera"
 import DropdownButton from '@/components/DropdownButton';
 
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+
+import {
+  useOccurrenceDatabase,
+  OccurrenceDatabase,
+} from "@/database/useOccurrenceDatabase"
 
 const OcurrenceForm: React.FC = () => {
-  const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Selecionar item');
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState('');
-  const [address, setAddress] = useState('');
+  const [location, setLocation] = useState('');
   const [erro, setErro] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
   const validarFormulario = () => {
-    if (!title || !description || !category || !photo || !address) {
+    if (!category || !description || !photo || !location) {
       setErro('Todos os campos são obrigatórios!');
       return false;
     }
@@ -24,16 +30,13 @@ const OcurrenceForm: React.FC = () => {
 
   const handleSubmit = () => {
     if (validarFormulario()) {
-      console.log('Ocorrência enviada:', { title, description, category, photo, address });
-      // Limpa os campos após o envio
-      setTitle('');
-      setDescription('');
+      console.log('Ocorrência enviada:', { category, description, photo, location });
       setCategory('');
+      setDescription('');
       setPhoto('');
-      setAddress('');
+      setLocation('');
     }
   };
-
 
   const dropdownData = [
     { label: 'Asfalto / Calçada / Outros', value: '1' },
@@ -61,10 +64,10 @@ const OcurrenceForm: React.FC = () => {
         multiline
       />
 
-    <View style={{ flex: 1, flexDirection: 'row' }}>
+    {/* <View style={{ flex: 1, flexDirection: 'row' }}>
       <View style={{ flex: 1, backgroundColor: 'red' }} />
       <View style={{ flex: 1, backgroundColor: 'green' }} />
-    </View>
+    </View> */}
 
       <Text style={styles.label}>Foto</Text>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -96,8 +99,8 @@ const OcurrenceForm: React.FC = () => {
       <Text style={styles.label}>Endereço</Text>
       <TextInput
         style={styles.input}
-        value={address}
-        onChangeText={setAddress}
+        value={location}
+        onChangeText={setLocation}
       />
 
       {erro ? <Text style={styles.error}>{erro}</Text> : null}
@@ -162,35 +165,3 @@ const styles = StyleSheet.create({
 });
 
 export default OcurrenceForm;
-
-
-
-////////////////////////////////////////
-// export function OcurrenceForm({ ...rest }: TextInputProps) {
-//   return (
-//     <View>
-//       <TextInput
-//         style={styles.input}
-//         {...rest}
-//       />
-//       <TextInput
-//         style={styles.input}
-//         {...rest}
-//       />
-//       <TextInput
-//         style={styles.input}
-//         {...rest}
-//       />
-//     </View>
-//   )
-// }
-
-// const styles = StyleSheet.create({
-//   input:{
-//     height: 54,
-//     borderWidth: 1,
-//     borderRadius: 7,
-//     borderColor: "#999",
-//     paddingHorizontal: 16,
-//   }
-// })
