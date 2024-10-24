@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, TextInputProps, TouchableOpacity, Modal } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, Alert, TextInputProps, TouchableOpacity, Modal } from 'react-native';
 import { Camera } from "@/components/Camera"
 import DropdownButton from '@/components/DropdownButton';
 
@@ -12,12 +12,34 @@ import {
 } from "@/database/useOccurrenceDatabase"
 
 const OcurrenceForm: React.FC = () => {
-  const [category, setCategory] = useState('Selecionar item');
+  const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState('');
   const [location, setLocation] = useState('');
   const [erro, setErro] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [occurrence, setOccurrenceroducts] = useState<OccurrenceDatabase[]>([]);
+
+  const occurrenceDatabase = useOccurrenceDatabase()
+
+  const handleCategoryChange = (value: string) => {
+    setCategory(value); // Atualiza o estado da categoria com o valor do dropdown
+  };
+
+  async function create() {
+    try {
+      const response = await occurrenceDatabase.create({
+        category,
+        description,
+        photo,
+        location
+      })
+
+      Alert.alert("Ocorrência registrada. Salve o ID para acompanhar: " + response.insertedRowId)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const validarFormulario = () => {
     if (!category || !description || !photo || !location) {
@@ -29,7 +51,15 @@ const OcurrenceForm: React.FC = () => {
   };
 
   const handleSubmit = () => {
+
+
+
+    console.log('Valor selecionado:', category);
+
     if (validarFormulario()) {
+
+      create();
+
       console.log('Ocorrência enviada:', { category, description, photo, location });
       setCategory('');
       setDescription('');
@@ -38,23 +68,43 @@ const OcurrenceForm: React.FC = () => {
     }
   };
 
-  const dropdownData = [
-    { label: 'Asfalto / Calçada / Outros', value: '1' },
-    { label: 'Poste / Fios / Outros', value: '2' },
-    { label: 'Denúncia', value: '3' },
-    { label: 'Esclarecimento', value: '4' },
-    { label: 'Sugestão', value: '5' },
-    { label: 'Outros...', value: '6' },
-  ];
+  async function pickImageAndSave(create: Function) {
+    // Solicita permissão para acessar a biblioteca de mídia
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!');
+      return;
+    }
+  
+    // Abre a galeria de fotos e retorna a imagem em base64
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      base64: true, // Habilita o base64 no retorno
+    });
+  
+    if (!result.canceled) {
+      // Chama a função `create` passando a imagem em base64
+      create({
+        category: 'Some category',
+        description: 'Some description',
+        photo: result.base64, // Base64 da imagem
+        location: 'Some location'
+      });
+    }
+  }
+  
+  const handleCategory = () => {
+    console.log({DropdownButton})
+
+  }
+
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Categoria</Text>
-      <DropdownButton
-        data={dropdownData}
-        // value={category}
-        // onChangeText={setCategory}
-      />
+      <DropdownButton onSelectCategory={handleCategoryChange}/>
 
       <Text style={styles.label}>Descrição</Text>
       <TextInput
@@ -63,11 +113,6 @@ const OcurrenceForm: React.FC = () => {
         onChangeText={setDescription}
         multiline
       />
-
-    {/* <View style={{ flex: 1, flexDirection: 'row' }}>
-      <View style={{ flex: 1, backgroundColor: 'red' }} />
-      <View style={{ flex: 1, backgroundColor: 'green' }} />
-    </View> */}
 
       <Text style={styles.label}>Foto</Text>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -82,7 +127,7 @@ const OcurrenceForm: React.FC = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
 
-            <Camera></Camera>
+            <Camera onClose={() => setModalVisible(false)}></Camera>
 
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text>Cancelar</Text>
@@ -90,6 +135,9 @@ const OcurrenceForm: React.FC = () => {
           </View>
         </View>
       </Modal>
+      <TouchableOpacity onPress={() => setModalVisible(false)}>
+        <Text>Cancelar</Text>
+      </TouchableOpacity>
       <TextInput
         style={styles.input}
         value={photo}

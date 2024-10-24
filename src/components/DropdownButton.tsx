@@ -2,43 +2,39 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
-// const DropdownButton = ({ data, label }) => {
-const DropdownButton = ({ data }) => {
-  const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
+const dropdownData = [
+  { label: 'Asfalto / Calçada / Outros', value: '1' },
+  { label: 'Poste / Fios / Outros', value: '2' },
+  { label: 'Denúncia', value: '3' },
+  { label: 'Esclarecimento', value: '4' },
+  { label: 'Sugestão', value: '5' },
+  { label: 'Outros...', value: '6' },
+];
 
-//   const renderLabel = () => {
-//     if (value || isFocus) {
-//       return (
-//         <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-//           {/* {label} */}
-//         </Text>
-//       );
-//     }
-//     return null;
-//   };
+const DropdownButton = ({ onSelectCategory }) => {
+  const [isFocus, setIsFocus] = useState(false);
+  const [category, setCategory] = useState<string>('');
 
   return (
     <View>
-      {/* {renderLabel()} */}
       <Dropdown
         style={[styles.dropdown, isFocus && { borderColor: '#fcbc24' }]}
         placeholderStyle={styles.textStyle}
         selectedTextStyle={styles.textStyle}
-        // inputSearchStyle={styles.inputSearchStyle}
-        // iconStyle={styles.iconStyle}
-        data={data}
-        // search
+
+        data={dropdownData}
+
         maxHeight={300}
         labelField="label"
         valueField="value"
         placeholder={!isFocus ? 'Selecionar item' : '...'}
-        // searchPlaceholder="Search..."
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
+
+        value={category}
+        // onFocus={() => setIsFocus(true)}
+        // onBlur={() => setIsFocus(false)}
         onChange={item => {
-          setValue(item.value);
+          setCategory(item.value);
+          onSelectCategory(item.value); // Passa o valor para o componente pai
           setIsFocus(false);
         }}
       />
