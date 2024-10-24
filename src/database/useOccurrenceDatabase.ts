@@ -14,25 +14,25 @@ export function useOccurrenceDatabase() {
   async function create(data: Omit<OccurrenceDatabase, "id">) {
     const statement = await database.prepareAsync(
       "INSERT INTO occurrences (category, description, photo, location) VALUES ($category, $description, $photo, $location)"
-    )
-
+    );
+  
     try {
       const result = await statement.executeAsync({
         $category: data.category,
         $description: data.description,
-        $photo: data.photo,
+        $photo: data.photo, // Base64 da imagem
         $location: data.location
-      })
-
-      const insertedRowId = result.lastInsertRowId.toLocaleString()
-
-      return { insertedRowId }
+      });
+  
+      const insertedRowId = result.lastInsertRowId.toLocaleString();
+      return { insertedRowId };
     } catch (error) {
-      throw error
+      throw error;
     } finally {
-      await statement.finalizeAsync()
+      await statement.finalizeAsync();
     }
   }
+  
 
   async function searchByCategory(category: string) {
     try {

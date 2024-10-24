@@ -18,9 +18,9 @@ export default function Index() {
   const [name, setName] = useState("")
   const [quantity, setQuantity] = useState("")
   const [search, setSearch] = useState("")
-  const [products, setProducts] = useState<ProductDatabase[]>([])
+  const [products, setProducts] = useState<OccurrenceDatabase[]>([])
 
-  const productDatabase = useProductDatabase()
+  const productDatabase = useOccurrenceDatabase()
 
   async function create() {
     try {

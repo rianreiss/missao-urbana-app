@@ -60,8 +60,8 @@ export default function Index() {
 
   async function list() {
     try {
-      const response = await occurrenceDatabase.searchByName(search)
-      setProducts(response)
+      // const response = await occurrenceDatabase.searchByName(search)
+      // setProducts(response)
     } catch (error) {
       console.log(error)
     }
@@ -132,7 +132,7 @@ export default function Index() {
           <Text style={styles.buttonText}>Meu Perfil</Text>
         </TouchableOpacity>
 
-        <Link href={"/ocurrenceList"} style={styles.button}>
+        <Link href={"/"} style={styles.button}>
           <TouchableOpacity onPress={() => handleButtonPress('Nova Ocorrência')}>
             <Text style={styles.buttonText}>Minhas Ocorrências</Text>
           </TouchableOpacity>
