@@ -1,29 +1,31 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
-
+import { useImageDatabase } from "@/database/useImageDatabase";
 
 interface CameraProps {
   onClose: () => void;
+  onTakeImage: (id_photo: number) => void;
 }
 
-export function Camera({ onClose }: CameraProps) {
+export function Camera({ onTakeImage, onClose }: CameraProps) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const cameraRef = useRef(null); // Referência para a câmera
-  const [imageBase64, setImageBase64] = useState<string | null>(null);
-  // const [photoUri, setPhotoUri] = useState<string | null>(null); // Armazenar a URI da foto
+  const cameraRef = useRef<CameraView>();
+  const [imageBase64, setImageBase64] = useState();
+  
+  const imageDatabase = useImageDatabase()
 
   if (!permission) {
-    // Permissões da câmera ainda estão sendo carregadas.
     return <View />;
+    // Permissões da câmera ainda estão sendo carregadas.
   }
 
   if (!permission.granted) {
     // As permissões da câmera ainda não foram concedidas.
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Text>We need your permission to show the camera</Text>
         <Button onPress={requestPermission} title="Grant permission" />
       </View>
     );
@@ -35,30 +37,49 @@ export function Camera({ onClose }: CameraProps) {
 
   const takePicture = async () => {
     if (cameraRef.current) {
-      const options = { base64: true };  // A opção base64
+      const options = { base64: true };
       const photo = await cameraRef.current.takePictureAsync(options);
+
+      const base64Image = photo.base64 !== undefined ? photo.base64 : null;
+
+      setImageBase64(photo);
       
-      onClose();
-      // Armazena a imagem em base64 no estado
-      setImageBase64(photo.base64);
-      console.log(photo.base64);  // Base64 da imagem capturada
+      const base64Response = await fetch(`data:image/jpg;base64,${base64Image}`);
+      const blob = await base64Response.blob();
+
+      if (blob) {
+        const arrayBuffer = await blob.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+
+        const { insertedRowId } = await imageDatabase.createImage({ photo: uint8Array  });
+
+        onTakeImage(insertedRowId);
+      }
+
+      setTimeout(() => {
+        onClose();
+      }, 1500);
     }
   };
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={takePicture}>
-            <Text style={styles.text}>Take Picture</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
-      {imageBase64 && (
-        <Text>Base64 da imagem capturada: {imageBase64}</Text>
+      {!imageBase64 ? (
+        <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+          <View style={styles.buttonContainer}>
+
+            <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+              <Text style={styles.text}>Flip Camera</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button} onPress={takePicture}>
+              <Text style={styles.text}>Take Picture</Text>
+            </TouchableOpacity>
+
+          </View>
+        </CameraView>
+      ) : (
+        <Image source={{ uri: `data:image/jpg;base64,${imageBase64}` }} style={{ flex: 1 }} />
       )}
     </View>
   );

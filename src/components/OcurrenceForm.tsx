@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert, TextInputProps, TouchableOpacity, Modal } from 'react-native';
-import { Camera } from "@/components/Camera"
+import { CameraComponent } from "@/components/Camera"
 import DropdownButton from '@/components/DropdownButton';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -14,7 +14,7 @@ import {
 const OcurrenceForm: React.FC = () => {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
-  const [photo, setPhoto] = useState('');
+  const [idPhoto, setIdPhoto] = useState<number | null>(null);
   const [location, setLocation] = useState('');
   const [erro, setErro] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -26,12 +26,16 @@ const OcurrenceForm: React.FC = () => {
     setCategory(value); // Atualiza o estado da categoria com o valor do dropdown
   };
 
+  const handleImageTaked = (id: number) => {
+    setIdPhoto(id);
+  };
+
   async function create() {
     try {
       const response = await occurrenceDatabase.create({
         category,
         description,
-        photo,
+        idPhoto,
         location
       })
 
@@ -42,7 +46,7 @@ const OcurrenceForm: React.FC = () => {
   }
 
   const validarFormulario = () => {
-    if (!category || !description || !photo || !location) {
+    if (!category || !description || idPhoto == 1 || !location) {
       setErro('Todos os campos são obrigatórios!');
       return false;
     }
@@ -60,10 +64,10 @@ const OcurrenceForm: React.FC = () => {
 
       create();
 
-      console.log('Ocorrência enviada:', { category, description, photo, location });
+      console.log('Ocorrência enviada:', { category, description, idPhoto, location });
       setCategory('');
       setDescription('');
-      setPhoto('');
+      setIdPhoto(null);
       setLocation('');
     }
   };
@@ -89,7 +93,7 @@ const OcurrenceForm: React.FC = () => {
       create({
         category: 'Some category',
         description: 'Some description',
-        photo: result.base64, // Base64 da imagem
+        idPhoto: result.base64, // Base64 da imagem
         location: 'Some location'
       });
     }
@@ -127,7 +131,7 @@ const OcurrenceForm: React.FC = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
 
-            <Camera onClose={() => setModalVisible(false)}></Camera>
+            <CameraComponent onClose={() => setModalVisible(false)} onTakeImage={handleImageTaked}></CameraComponent>
 
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text>Cancelar</Text>
@@ -138,11 +142,6 @@ const OcurrenceForm: React.FC = () => {
       <TouchableOpacity onPress={() => setModalVisible(false)}>
         <Text>Cancelar</Text>
       </TouchableOpacity>
-      <TextInput
-        style={styles.input}
-        value={photo}
-        onChangeText={setPhoto}
-      />
 
       <Text style={styles.label}>Endereço</Text>
       <TextInput

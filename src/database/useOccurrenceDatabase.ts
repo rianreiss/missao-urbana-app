@@ -4,7 +4,7 @@ export type OccurrenceDatabase = {
   id: number
   category: string
   description: string
-  photo: string
+  idPhoto: number
   location: string
 }
 
@@ -13,14 +13,14 @@ export function useOccurrenceDatabase() {
 
   async function create(data: Omit<OccurrenceDatabase, "id">) {
     const statement = await database.prepareAsync(
-      "INSERT INTO occurrences (category, description, photo, location) VALUES ($category, $description, $photo, $location)"
+      "INSERT INTO occurrences (category, description, id_photo, location) VALUES ($category, $description, $idPhoto, $location)"
     );
   
     try {
       const result = await statement.executeAsync({
         $category: data.category,
         $description: data.description,
-        $photo: data.photo, // Base64 da imagem
+        $idPhoto: data.idPhoto,
         $location: data.location
       });
   
@@ -42,7 +42,6 @@ export function useOccurrenceDatabase() {
         query,
         `%${category}%`
       )
-
       return response
     } catch (error) {
       throw error
@@ -51,14 +50,14 @@ export function useOccurrenceDatabase() {
 
   async function update(data: OccurrenceDatabase) {
     const statement = await database.prepareAsync(
-      "UPDATE occurrences SET category = $category, description = $description, photo = $photo, location = $location WHERE id = $id"
+      "UPDATE occurrences SET category = $category, description = $description, idPhoto = $idPhoto, location = $location WHERE id = $id"
     )
 
     try {
       await statement.executeAsync({
         $category: data.category,
         $description: data.description,
-        $photo: data.photo,
+        $idPhoto: data.idPhoto,
         $location: data.location
       })
     } catch (error) {
