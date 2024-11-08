@@ -16,7 +16,7 @@ const DropdownButton = ({ onSelectCategory }) => {
   const [category, setCategory] = useState<string>('');
 
   return (
-    <View>
+    <View style={styles.container}>
       <Dropdown
         style={[styles.dropdown, isFocus && { borderColor: '#fcbc24' }]}
         placeholderStyle={styles.textStyle}
@@ -46,11 +46,11 @@ export default DropdownButton;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    padding: 16,
+    width: '100%',
   },
   dropdown: {
-    height: 50,
+    width: '100%',
+    height: 40,
     borderColor: "#999",
     borderWidth: 1,
     borderRadius: 8,
