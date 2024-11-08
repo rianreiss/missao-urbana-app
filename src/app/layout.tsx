@@ -1,155 +1,72 @@
-import { useEffect, useState } from "react"
-import { View, Button, Alert, FlatList, StyleSheet, Text, TouchableOpacity } from "react-native"
-import { router, Link } from "expo-router"
+import React from 'react';
+import { ScrollView, View, StyleSheet, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { Input } from "@/components/Input"
-import { Product } from "@/components/Product"
+interface LayoutProps {
+  title?: string;
+  children: React.ReactNode;
+}
 
-import OcurrenceForm from '@/components/OcurrenceForm'
-
-import {
-  useOccurrenceDatabase,
-  OccurrenceDatabase,
-} from "@/database/useOccurrenceDatabase"
-import { SafeAreaView } from "react-native-safe-area-context"
-
-export default function Index() {
-  const [id, setId] = useState("")
-  const [name, setName] = useState("")
-  const [quantity, setQuantity] = useState("")
-  const [search, setSearch] = useState("")
-  const [products, setProducts] = useState<OccurrenceDatabase[]>([])
-
-  const occurrenceDatabase = useOccurrenceDatabase()
-
-  async function create() {
-    try {
-      if (isNaN(Number(quantity))) {
-        return Alert.alert("Quantidade", "A quantidade precisa ser um número!")
-      }
-
-      const response = await occurrenceDatabase.create({
-        name,
-        quantity: Number(quantity),
-      })
-
-      Alert.alert("Produto cadastrado com o ID: " + response.insertedRowId)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async function update() {
-    try {
-      if (isNaN(Number(quantity))) {
-        return Alert.alert("Quantidade", "A quantidade precisa ser um número!")
-      }
-
-      const response = await occurrenceDatabase.update({
-        id: Number(id),
-        name,
-        quantity: Number(quantity),
-      })
-
-      Alert.alert("Produto atualizado!")
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async function list() {
-    try {
-      const response = await occurrenceDatabase.searchByName(search)
-      setProducts(response)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async function remove(id: number) {
-    try {
-      await occurrenceDatabase.remove(id)
-      await list()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  
-  async function handleSave() {
-    if (id) {
-      update()
-    } else {
-      create()
-    }
-
-    setId("")
-    setName("")
-    setQuantity("")
-    await list()
-  }
-
+const Layout: React.FC<LayoutProps> = ({ title, children }) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.containerSafeArea}>
 
-        <Link href={"/"} style={styles.button}>
-            <Text style={styles.buttonText}>Voltar</Text>
-        </Link>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}> { title } </Text>
+      </View>
 
-      <OcurrenceForm></OcurrenceForm>
+      <ScrollView style={styles.container}>
+
+        { children }
+
+      </ScrollView>
+
+      <View style={styles.footerContainer}>
+        <Text style={styles.footerText}>© 2024 Missão Urbana App</Text>
+      </View>
       
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  title1: {
-    color: 'white',
-    marginTop: 0,
-    margin: 5,
-    fontSize: 15,
-    fontWeight: 'bold'
-  },
-  title2: {
-    color: 'white',
-    marginTop: 0,
-    margin: 5,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  container: {
-    backgroundColor: '#1A1A1A',
-    // backgroundColor: '#646464',
+  containerSafeArea: {
+    backgroundColor: '#212121',
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    padding: 16,
-    // backgroundColor: '#f5f5f5', // Cor de fundo
+    alignItems:'center',
+    paddingHorizontal: 15,
   },
-  // { backgroundColor: 'black', flex: 1, justifyContent: "center", padding: 32, gap: 16 }
-  title: {
+  
+  titleContainer: {
+    width: '100%',
+    height: '8%',
+    justifyContent:'center',
+    alignItems:'center',
+    marginTop: 15,
+  },
+  titleText: {
+    color: 'white',
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
   },
-  buttonContainer: {
+
+  container: {
+    flexGrow: 1,
+    padding: 15,
+    paddingBottom: 50,
     width: '100%',
-    justifyContent: 'space-around', // Espaçamento igual entre os botões
   },
-  buttonText: {
-    color: '#fff', // Cor do texto
-    fontSize: 16,
-    fontWeight: 'bold',
+
+  footerContainer: {
+    width: '100%',
+    height: '5%',
+    justifyContent:'center',
+    alignItems:'flex-end',
   },
-  button: {
-    backgroundColor: '#fcbc24', // Cor de fundo do botão
-    // backgroundColor: '#dcac34', // Cor de fundo do botão
-    padding: 12,
-    marginVertical: 10,
-    borderRadius: 8,
-    alignItems: 'center', // Centraliza o texto no botão
-  },
-  spacer: {
-    margin: 10
+  footerText: {
+    color: 'white',
+    fontSize: 10,
   }
 })
+
+export default Layout;

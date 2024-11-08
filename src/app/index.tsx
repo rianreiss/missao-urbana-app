@@ -1,121 +1,39 @@
-import { useEffect, useState } from "react"
-import { View, Button, Alert, FlatList, StyleSheet, Text, TouchableOpacity } from "react-native"
-import { router, Link } from "expo-router"
-import { Camera } from 'expo-camera'
-
-import { Input } from "@/components/Input"
-import { Product } from "@/components/Product"
-
-import OcurrenceForm from '@/components/OcurrenceForm'
-
-import {
-  useOccurrenceDatabase,
-  OccurrenceDatabase,
-} from "@/database/useOccurrenceDatabase"
+import { View, Button, StyleSheet, Text, TouchableOpacity, Image } from "react-native"
+import { Link, useRouter } from "expo-router"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Index() {
-  const [id, setId] = useState("")
-  const [name, setName] = useState("")
-  const [quantity, setQuantity] = useState("")
-  const [search, setSearch] = useState("")
-  const [products, setProducts] = useState<OccurrenceDatabase[]>([])
-
-  const occurrenceDatabase = useOccurrenceDatabase()
-
-  async function create() {
-    try {
-      if (isNaN(Number(quantity))) {
-        return Alert.alert("Quantidade", "A quantidade precisa ser um número!")
-      }
-
-      const response = await occurrenceDatabase.create({
-        name,
-        quantity: Number(quantity),
-      })
-
-      Alert.alert("Produto cadastrado com o ID: " + response.insertedRowId)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async function update() {
-    try {
-      if (isNaN(Number(quantity))) {
-        return Alert.alert("Quantidade", "A quantidade precisa ser um número!")
-      }
-
-      const response = await occurrenceDatabase.update({
-        id: Number(id),
-        name,
-        quantity: Number(quantity),
-      })
-
-      Alert.alert("Produto atualizado!")
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async function list() {
-    try {
-      // const response = await occurrenceDatabase.searchByName(search)
-      // setProducts(response)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async function remove(id: number) {
-    try {
-      await occurrenceDatabase.remove(id)
-      await list()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  function details(item: OccurrenceDatabase) {
-    setId(String(item.id))
-    setName(item.name)
-    setQuantity(String(item.quantity))
-  }
-
-  async function handleSave() {
-    if (id) {
-      update()
-    } else {
-      create()
-    }
-
-    setId("")
-    setName("")
-    setQuantity("")
-    await list()
-  }
-
-  useEffect(() => {
-    list()
-  }, [search])
+  const router = useRouter();
 
   const handleButtonPress = (buttonName: string) => {
     console.log(`${buttonName} pressionado`);
-    // Aqui você pode adicionar a navegação ou lógica correspondente
+  };
+
+  const routerHandler = (view: string) => {
+
+    switch(view) {
+      case 'profile': {
+        router.push("./screens/MyProfile");
+        break;
+      }
+      case 'occurrences': {
+        router.push("./screens/occurrenceList");
+        break;
+      }
+      case 'newOccurrence': {
+        router.push("./screens/occurrenceForm");
+        break;
+      }
+      case 'news': {
+        router.push("./screens/OccurrenceForm");
+        break;
+      }
+    }
+    console.log(`${view} pressionado`);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Input placeholder="Nome" onChangeText={setName} value={name} />
-      <Input
-        placeholder="Quantidade"
-        onChangeText={setQuantity}
-        value={quantity}
-      />
-
-      <Button title="Salvar" onPress={handleSave} />
-
-      <Input placeholder="Pesquisar" onChangeText={setSearch} /> */}
 
       <View style={styles.spacer}></View>
 
@@ -128,42 +46,26 @@ export default function Index() {
       <View style={styles.spacer}></View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Meu Perfil')}>
+        <TouchableOpacity style={styles.button} onPress={() => routerHandler('profile')}>
           <Text style={styles.buttonText}>Meu Perfil</Text>
         </TouchableOpacity>
 
-        <Link href={"/"} style={styles.button}>
-          <TouchableOpacity onPress={() => handleButtonPress('Nova Ocorrência')}>
-            <Text style={styles.buttonText}>Minhas Ocorrências</Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity style={styles.button} onPress={() => routerHandler('occurrences')}>
+          <Text style={styles.buttonText}>Minhas Ocorrências</Text>
+        </TouchableOpacity>
 
-        <Link href={"/layout"} style={styles.button}>
-          <TouchableOpacity onPress={() => handleButtonPress('Nova Ocorrência')}>
-            <Text style={styles.buttonText}>Nova Ocorrência</Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity style={styles.button} onPress={() => routerHandler('newOccurrence')}>
+          <Text style={styles.buttonText}>Nova Ocorrência</Text>
+        </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => handleButtonPress('Notícias')}>
+        <TouchableOpacity style={styles.button} onPress={() => routerHandler('news')}>
           <Text style={styles.buttonText}>Notícias</Text>
         </TouchableOpacity>
       </View>
 
-      {/* <OcurrenceForm /> */}
-
-      {/* <FlatList
-        data={products}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <Product
-            data={item}
-            onPress={() => details(item)}
-            onDelete={() => remove(item.id)}
-            onOpen={() => router.navigate("/details/" + item.id)}
-          />
-        )}
-        contentContainerStyle={{ gap: 16 }}
-      /> */}
+      <View style={styles.logoview}>
+        <Image source={require('../../assets/images/onca.png')} style={styles.logo} />
+      </View>
     </SafeAreaView>
   )
 }
@@ -183,6 +85,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  logoview: {
+    width: '100%',
+    alignItems: 'flex-start',
+    paddingTop: 35
+  },
+  logo: {
+    width: 130,
+    height: 130,
+    resizeMode: 'contain',
+    flex: 0,
+    alignItems: 'flex-start'
+  },
   container: {
     backgroundColor: '#1A1A1A',
     // backgroundColor: '#646464',
@@ -190,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 16,
-    // backgroundColor: '#f5f5f5', // Cor de fundo
+    // backgroundColor: '#f5f5f5',
   },
   // { backgroundColor: 'black', flex: 1, justifyContent: "center", padding: 32, gap: 16 }
   title: {
@@ -201,20 +115,34 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    justifyContent: 'space-around', // Espaçamento igual entre os botões
+    justifyContent: 'space-around',
   },
   buttonText: {
-    color: '#fff', // Cor do texto
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  button: {
-    backgroundColor: '#fcbc24', // Cor de fundo do botão
-    // backgroundColor: '#dcac34', // Cor de fundo do botão
+  button1: {
+    backgroundColor: '#fcbc24',
+    // backgroundColor: '#dcac34',
     padding: 12,
     marginVertical: 10,
     borderRadius: 8,
-    alignItems: 'center', // Centraliza o texto no botão
+    alignItems: 'center',
+  },
+  button: {
+    width: 'auto',
+    backgroundColor: '#fcbc24',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 2,                // sombra para Android
+    shadowColor: '#fff',         // sombra para iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2 ,
+    shadowRadius: 8,
   },
   spacer: {
     margin: 10
