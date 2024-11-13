@@ -5,10 +5,6 @@ import { SafeAreaView } from "react-native-safe-area-context"
 export default function Index() {
   const router = useRouter();
 
-  const handleButtonPress = (buttonName: string) => {
-    console.log(`${buttonName} pressionado`);
-  };
-
   const routerHandler = (view: string) => {
 
     switch(view) {
@@ -25,7 +21,7 @@ export default function Index() {
         break;
       }
       case 'news': {
-        router.push("./screens/OccurrenceForm");
+        router.push("./screens/occurrenceForm");
         break;
       }
     }
@@ -33,19 +29,14 @@ export default function Index() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.containerSafeArea}>
 
-      <View style={styles.spacer}></View>
-
-      <View>
+      <View style={styles.containerTitle}>
         <Text style={styles.title1}>Bem-vindo(a) ao</Text>
-        <Text style={styles.title2}>Missão Urbana App</Text>
+        <Text style={styles.title2}><Text style={styles.textAlternative}>Missão</Text> Urbana App</Text>
       </View>
 
-      <View style={styles.spacer}></View>
-      <View style={styles.spacer}></View>
-
-      <View style={styles.buttonContainer}>
+      <View style={styles.containerButtons}>
         <TouchableOpacity style={styles.button} onPress={() => routerHandler('profile')}>
           <Text style={styles.buttonText}>Meu Perfil</Text>
         </TouchableOpacity>
@@ -63,14 +54,58 @@ export default function Index() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.logoview}>
+      <View style={styles.containerLogo}>
         <Image source={require('../../assets/images/onca.png')} style={styles.logo} />
       </View>
+
+      <View style={styles.footerContainer}>
+        <Text style={styles.footerText}>© 2024 Missão Urbana App</Text>
+      </View>
+
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
+  containerSafeArea: {
+    backgroundColor: '#212121',
+    flex: 1,
+    alignItems:'center',
+    paddingTop: 20,
+    paddingHorizontal: 15,
+    position: 'relative',
+  },
+
+  containerTitle: {
+    marginBottom: 30,
+  },
+  
+  containerButtons: {
+    width: '100%',
+    gap: 15,
+    marginBottom: 60,
+  },
+  
+  buttonText: {
+    color: 'black', // Cor do texto
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  button: {
+    width: 'auto',
+    backgroundColor: '#fcbc24',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 2,                // sombra para Android
+    shadowColor: '#fff',         // sombra para iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2 ,
+    shadowRadius: 8,
+  },
+
   title1: {
     color: 'white',
     marginTop: 0,
@@ -85,10 +120,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  logoview: {
+  textAlternative: {
+    color: '#fcbc24',
+  },
+
+  containerLogo: {
     width: '100%',
     alignItems: 'flex-start',
-    paddingTop: 35
+    bottom: 0,
+    elevation: 2,                // sombra para Android
+    shadowColor: '#fff',         // sombra para iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2 ,
+    shadowRadius: 8,
   },
   logo: {
     width: 130,
@@ -97,54 +141,17 @@ const styles = StyleSheet.create({
     flex: 0,
     alignItems: 'flex-start'
   },
-  container: {
-    backgroundColor: '#1A1A1A',
-    // backgroundColor: '#646464',
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    padding: 16,
-    // backgroundColor: '#f5f5f5',
-  },
-  // { backgroundColor: 'black', flex: 1, justifyContent: "center", padding: 32, gap: 16 }
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-  },
-  buttonContainer: {
+  
+  footerContainer: {
     width: '100%',
-    justifyContent: 'space-around',
+    height: '5%',
+    justifyContent:'center',
+    alignItems:'flex-end',
+    position: 'absolute',
+    bottom: 0
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  button1: {
-    backgroundColor: '#fcbc24',
-    // backgroundColor: '#dcac34',
-    padding: 12,
-    marginVertical: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  button: {
-    width: 'auto',
-    backgroundColor: '#fcbc24',
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 2,                // sombra para Android
-    shadowColor: '#fff',         // sombra para iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2 ,
-    shadowRadius: 8,
-  },
-  spacer: {
-    margin: 10
+  footerText: {
+    color: 'white',
+    fontSize: 10,
   }
 })

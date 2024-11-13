@@ -91,6 +91,7 @@ export function CameraComponent({ onTakeImage, onClose }: CameraProps) {
     <View style={styles.container}>
       {!imageBase64 ? (
         <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
               <Text style={styles.text}>Flip Camera</Text>
@@ -99,6 +100,10 @@ export function CameraComponent({ onTakeImage, onClose }: CameraProps) {
               <Text style={styles.text}>Take Picture</Text>
             </TouchableOpacity>
           </View>
+
+          <TouchableOpacity style={styles.button} onPress={onClose}>
+            <Text style={styles.buttonText}>Cancelar</Text>
+          </TouchableOpacity>
         </CameraView>
       ) : (
         <Image source={{ uri: `data:image/jpg;base64,${imageBase64}` }} style={{ flex: 1 }} />
@@ -110,7 +115,6 @@ export function CameraComponent({ onTakeImage, onClose }: CameraProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     width: '100%',
     borderRadius: 9,
     overflow: 'hidden',
@@ -119,10 +123,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   camera: {
     flex: 1,
+    height: '100%',
+    width: '100%',
+    padding: 15,
     justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 9,
     overflow: 'hidden'
   },
@@ -131,11 +141,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'transparent',
     margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 7,
+    borderColor: "#999",
   },
   text: {
     fontSize: 24,
@@ -154,6 +162,25 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     marginTop: 10,
   },
+  buttonText: {
+    color: 'black', // Cor do texto
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  button: {
+    width: 'auto',
+    backgroundColor: '#fcbc24',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 2,                // sombra para Android
+    shadowColor: '#fff',         // sombra para iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2 ,
+    shadowRadius: 8,
+  }
 });
 
 export default CameraComponent;

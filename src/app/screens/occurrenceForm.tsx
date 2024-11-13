@@ -174,9 +174,6 @@ const OcurrenceForm: React.FC = () => {
 
                   <CameraComponent onClose={() => setModalVisible(false)} onTakeImage={handleImageTaked}></CameraComponent>
 
-                  <TouchableOpacity style={styles.button} onPress={() => setModalVisible(false)}>
-                    <Text style={styles.buttonText}>Cancelar</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </Modal>
@@ -294,7 +291,7 @@ const styles = StyleSheet.create({
   button: {
     width: 'auto',
     backgroundColor: '#fcbc24',
-    paddingVertical: 6,
+    paddingVertical: 8,
     paddingHorizontal: 10,
     borderRadius: 8,
     alignItems: 'center',
