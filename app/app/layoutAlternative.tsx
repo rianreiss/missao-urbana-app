@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface LayoutProps {
@@ -7,7 +7,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ title, children }) => {
+const LayoutAlernative: React.FC<LayoutProps> = ({ title, children }) => {
   return (
     <SafeAreaView style={styles.containerSafeArea}>
 
@@ -15,11 +15,11 @@ const Layout: React.FC<LayoutProps> = ({ title, children }) => {
         <Text style={styles.titleText}> { title } </Text>
       </View>
 
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
 
         { children }
 
-      </ScrollView>
+      </View>
 
       <View style={styles.footerContainer}>
         <Text style={styles.footerText}>© 2024 Missão Urbana App</Text>
@@ -69,4 +69,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Layout;
+export default LayoutAlernative;

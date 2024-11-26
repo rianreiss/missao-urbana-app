@@ -1,7 +1,7 @@
 import { CameraView, useCameraPermissions, PermissionStatus } from 'expo-camera';
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
-import { useImageDatabase } from "@/database/useImageDatabase";
+import { useImageDatabase } from "../database/useImageDatabase";
 import { CameraType } from 'expo-image-picker';
 
 interface CameraProps {
@@ -66,6 +66,7 @@ export function CameraComponent({ onTakeImage, onClose }: CameraProps) {
         }
 
         const uint8Array = new Uint8Array(byteArrays);
+        // console.log(uint8Array)
         
         const { insertedRowId } = await imageDatabase.createImage({ photo: uint8Array });
         console.log(insertedRowId)
@@ -80,10 +81,10 @@ export function CameraComponent({ onTakeImage, onClose }: CameraProps) {
         //   onTakeImage(insertedRowId);
         // }
       }
-
+      // console.log(imageBase64);
       setTimeout(() => {
         onClose();
-      }, 1000);
+      }, 500);
     }
   };
 
@@ -106,9 +107,11 @@ export function CameraComponent({ onTakeImage, onClose }: CameraProps) {
           </TouchableOpacity>
         </CameraView>
       ) : (
-        <Image source={{ uri: `data:image/jpg;base64,${imageBase64}` }} style={{ flex: 1 }} />
+        <View style={styles.containerImage}>
+          <Image source={{ uri: `data:image/jpg;base64,${imageBase64}` }} style={{ flex: 1 }} />
+        </View>
       )}
-    </View> 
+    </View>
   );
 }
 
@@ -150,18 +153,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-  preview: {
-    position: 'absolute',
-    bottom: 10,
-    alignItems: 'center',
-    width: '100%',
-  },
-  photo: {
-    width: 300,
-    height: 400,
-    borderRadius: 9,
-    marginTop: 10,
-  },
   buttonText: {
     color: 'black', // Cor do texto
     fontSize: 16,
@@ -180,6 +171,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2 ,
     shadowRadius: 8,
+  },
+  containerImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 9, 
   }
 });
 

@@ -13,11 +13,11 @@ export default function Index() {
         break;
       }
       case 'occurrences': {
-        router.push("./screens/occurrenceList");
+        router.push("./app/screens/occurrenceList");
         break;
       }
       case 'newOccurrence': {
-        router.push("./screens/occurrenceForm");
+        router.push("./app/screens/occurrenceForm");
         break;
       }
       case 'news': {
@@ -55,7 +55,7 @@ export default function Index() {
       </View>
 
       <View style={styles.containerLogo}>
-        <Image source={require('../../assets/images/onca.png')} style={styles.logo} />
+        <Image source={require('../assets/images/onca.png')} style={styles.logo} />
       </View>
 
       <View style={styles.footerContainer}>

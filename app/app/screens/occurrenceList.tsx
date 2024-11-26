@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import Layout from '@/app/layout';
+import LayoutAlernative from '@/app/layoutAlternative';
 import { View, Button, Alert, FlatList, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { useRouter, Link } from "expo-router"
 
@@ -26,7 +26,24 @@ export default function Index() {
 
   const productDatabase = useOccurrenceDatabase()
 
+  const goBack = () => {
+    router.push('/');
+  };
 
+  useEffect(() => {
+    list();
+  }, []);  
+
+  async function list() {
+    try {
+      const response = await productDatabase.searchAll()
+      console.log(response);
+      setOccurrences(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
   async function update() {
     try {
       // if (isNaN(Number(quantity))) {
@@ -47,14 +64,6 @@ export default function Index() {
     }
   }
 
-  async function list() {
-    try {
-      const response = await productDatabase.searchByCategory(search)
-      setOccurrences(response)
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   async function remove(id: number) {
     try {
@@ -83,15 +92,18 @@ export default function Index() {
   }
 
   return (
-    <Layout title='Minhas Ocorrências'>
-      <SafeAreaView style={styles.container}>
+    <LayoutAlernative title='Minhas Ocorrências'>
+      <View style={styles.container}>
 
-        <Link href={"/"} style={styles.button}>
-            <Text style={styles.buttonText}>Voltar</Text>
-        </Link>
+        <View style={styles.backContainer}>
+          <TouchableOpacity style={styles.button} onPress={() => goBack()}>
+            <Text style={[styles.buttonText, { fontSize: 14 }]}>Voltar</Text>
+          </TouchableOpacity>
+        </View>
 
         <FlatList
         data={occurrences}
+        style={styles.flatList}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
           <Occurrence
@@ -103,12 +115,32 @@ export default function Index() {
         )}
         contentContainerStyle={{ gap: 16 }}
         />
-      </SafeAreaView>
-    </Layout>
+      </View>
+    </LayoutAlernative>
   )
 }
 
-const styles = StyleSheet.create({  
+const styles = StyleSheet.create({
+  container: {
+    // backgroundColor: '#1A1A1A',
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: 10,
+    borderColor: 'gray',
+    borderWidth: 1,
+    gap: 10,
+  },
+  backContainer: {
+    width: '100%',
+    alignItems: "flex-end",
+  },
+
+  flatList: {
+    width: '100%',
+    borderRadius: 5,
+  },
+
   button: {
     width: 'auto',
     backgroundColor: '#fcbc24',
@@ -136,15 +168,6 @@ const styles = StyleSheet.create({
     margin: 5,
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  container: {
-    backgroundColor: '#1A1A1A',
-    // backgroundColor: '#646464',
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    padding: 16,
-    // backgroundColor: '#f5f5f5', // Cor de fundo
   },
   // { backgroundColor: 'black', flex: 1, justifyContent: "center", padding: 32, gap: 16 }
   title: {

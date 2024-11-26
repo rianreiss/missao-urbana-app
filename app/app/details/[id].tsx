@@ -32,15 +32,12 @@ export default function Details() {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={{ fontSize: 32 }}>ID: {params.id} </Text>
 
-      <Text style={{ fontSize: 32 }}>Quantidade: {data.category}</Text>
-
-      <Text style={{ fontSize: 32 }}>Nome: {data.description}</Text>
-
-      <Text style={{ fontSize: 32 }}>Quantidade: {data.idPhoto}</Text>
-
-      <Text style={{ fontSize: 32 }}>Nome: {data.location}</Text>
+      <Text style={{ fontSize: 32 }}>Categoria: {data.category}</Text>
+      <Text style={{ fontSize: 32 }}>Descrição: {data.description}</Text>
+      <Text style={{ fontSize: 32 }}>ID da Foto: {data.idPhoto}</Text>
+      <Text style={{ fontSize: 32 }}>Localização: {data.location}</Text>
+      
     </View>
   )
 }

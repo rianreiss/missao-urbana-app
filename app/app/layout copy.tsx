@@ -1,6 +1,6 @@
 import { ScrollView, View, Button, Alert, FlatList, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { router, Link } from "expo-router"
-import OcurrenceForm from '@/app/screens/occurrenceForm'
+import OcurrenceForm from './screens/occurrenceForm'
 
 import { SafeAreaView } from "react-native-safe-area-context"
 

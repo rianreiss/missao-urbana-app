@@ -31,8 +31,7 @@ export function useOccurrenceDatabase() {
     } finally {
       await statement.finalizeAsync();
     }
-  }
-  
+  }  
 
   async function searchByCategory(category: string) {
     try {
@@ -42,7 +41,23 @@ export function useOccurrenceDatabase() {
         query,
         `%${category}%`
       )
-      return response
+      return response;
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async function searchAll() {
+    try {
+      const query = "SELECT * FROM occurrences"
+
+      const response = await database.getAllAsync(
+        query
+      )
+
+      console.log(response)
+
+      return response;
     } catch (error) {
       throw error
     }
@@ -89,5 +104,5 @@ export function useOccurrenceDatabase() {
     }
   }
 
-  return { create, searchByCategory, update, remove, show }
+  return { create, searchByCategory, searchAll, update, remove, show }
 }

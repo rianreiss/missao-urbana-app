@@ -51,9 +51,6 @@ export function useImageDatabase() {
     try {
       const query = "SELECT * FROM images WHERE id_photo = ?";
       const response = await database.getFirstAsync<ImageDatabase & { photo: string }>(query, [id_photo]);
-      if (response) {
-        response.photo = uint8ArrayToBase64(response.photo); // Converte de volta para Uint8Array
-      }
       return response;
     } catch (error) {
       throw error;
