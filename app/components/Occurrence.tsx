@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 
 type Props = PressableProps & {
   data: {
+    id: number
     category: string
     description: string
     idPhoto: number
@@ -44,15 +45,15 @@ export function Occurrence({ data, onDelete, onOpen, ...rest }: Props) {
       {...rest}
     >
       <View style={styles.containerPreviewOccurrence}>
-        <Text style={styles.blue}>
-          { categoryHandled }
+        <Text style={styles.title}>
+          {data.id} - { categoryHandled }
         </Text>
-        <Text style={styles.green}>
+        <Text style={styles.location}>
           {data.location}
         </Text>
       </View>
 
-      <View>
+      <View style={styles.containerButtons}>
         <TouchableOpacity onPress={onDelete}>
           <MaterialIcons name="delete" size={24} color="red" />
         </TouchableOpacity>
@@ -83,10 +84,11 @@ const styles = StyleSheet.create({
     // position: 'relative',
   },
   containerPreviewOccurrence: {
-    backgroundColor: "#fff",
-    width: '70%',
+    width: '80%',
     height: '100%',
     justifyContent: 'flex-start',
+    gap: 10,
+    overflow: 'hidden',
     // flexDirection: "co",
     // backgroundColor: '#212121',
     // flex: 1,
@@ -96,11 +98,12 @@ const styles = StyleSheet.create({
     // position: 'relative',
   },
 
-  blue: {
-    backgroundColor: 'cyan'
+  title: {
+    fontSize: 14,
+    fontWeight: 'bold',
   },
-  green: {
-    backgroundColor: 'lime'
+  location: {
+    textAlign: 'justify'
   },
 
   containerTitle: {
@@ -108,9 +111,13 @@ const styles = StyleSheet.create({
   },
   
   containerButtons: {
-    width: '100%',
-    gap: 15,
+    width: '15%',
+    height: '100%',
     marginBottom: 60,
+    // backgroundColor: '#212121',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
   
   buttonText: {

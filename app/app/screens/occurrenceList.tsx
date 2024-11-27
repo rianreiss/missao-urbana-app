@@ -24,7 +24,7 @@ export default function Index() {
   const [search, setSearch] = useState("")
   const [occurrences, setOccurrences] = useState<OccurrenceDatabase[]>([])
 
-  const productDatabase = useOccurrenceDatabase()
+  const occurrenceDatabase = useOccurrenceDatabase()
 
   const goBack = () => {
     router.push('/');
@@ -36,8 +36,8 @@ export default function Index() {
 
   async function list() {
     try {
-      const response = await productDatabase.searchAll()
-      console.log(response);
+      const response = await occurrenceDatabase.searchAll()
+      // console.log(response);
       setOccurrences(response)
     } catch (error) {
       console.log(error)
@@ -50,7 +50,7 @@ export default function Index() {
       //   return Alert.alert("Quantidade", "A quantidade precisa ser um número!")
       // }
 
-      const response = await productDatabase.update({
+      const response = await occurrenceDatabase.update({
         id: Number(id),
         category,
         description,
@@ -67,7 +67,7 @@ export default function Index() {
 
   async function remove(id: number) {
     try {
-      await productDatabase.remove(id)
+      await occurrenceDatabase.remove(id)
       await list()
     } catch (error) {
       console.log(error)
@@ -88,7 +88,7 @@ export default function Index() {
   }
 
   function details(item: OccurrenceDatabase): void {
-    throw new Error("Function not implemented.")
+    console.log('nada')
   }
 
   return (
@@ -110,7 +110,7 @@ export default function Index() {
             data={item}
             onPress={() => details(item)}
             onDelete={() => remove(item.id)}
-            onOpen={() => router.navigate("/details/" + item.id)}
+            onOpen={() => router.navigate("../details/" + item.id)}
           />
         )}
         contentContainerStyle={{ gap: 16 }}

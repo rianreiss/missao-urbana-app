@@ -55,7 +55,7 @@ export function useOccurrenceDatabase() {
         query
       )
 
-      console.log(response)
+      // console.log(response)
 
       return response;
     } catch (error) {
@@ -98,7 +98,7 @@ export function useOccurrenceDatabase() {
         id,
       ])
 
-      return response
+      return response;
     } catch (error) {
       throw error
     }

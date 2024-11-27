@@ -95,10 +95,12 @@ export function CameraComponent({ onTakeImage, onClose }: CameraProps) {
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-              <Text style={styles.text}>Flip Camera</Text>
+              {/* <Text style={styles.text}>Flip Camera</Text> */}
+              <Text style={styles.text}>Virar Camera</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={takePicture}>
-              <Text style={styles.text}>Take Picture</Text>
+              {/* <Text style={styles.text}>Take Picture</Text> */}
+              <Text style={styles.text}>Tirar Foto</Text>
             </TouchableOpacity>
           </View>
 
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     width: '100%',
+    paddingTop: 280,
     padding: 15,
     justifyContent: 'center',
     alignItems: 'center',
@@ -144,14 +147,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'transparent',
     margin: 64,
-    borderWidth: 1,
-    borderRadius: 7,
-    borderColor: "#999",
+    gap: 20,
+    height: 2,
+    // width: 200,
   },
   text: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
   },
   buttonText: {
     color: 'black', // Cor do texto
