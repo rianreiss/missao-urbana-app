@@ -18,9 +18,13 @@ const DropdownButton = ({ onSelectCategory }) => {
   return (
     <View style={styles.container}>
       <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: '#fcbc24' }]}
+        // style={[styles.dropdown, !isFocus && { borderColor: '#fcbc24' }]}
+        style={styles.dropdown}
+
         placeholderStyle={styles.textStyle}
         selectedTextStyle={styles.textStyle}
+
+        containerStyle={styles.dropdownCointainer}
 
         data={dropdownData}
 
@@ -55,6 +59,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 8,
+  },
+  dropdownCointainer: {
+    backgroundColor: '#8c8c8c',
+    color: '',
+    borderWidth: 1,
+    borderRadius: 7,
+    borderColor: "#fcbc24",
   },
   icon: {
     marginRight: 5,
